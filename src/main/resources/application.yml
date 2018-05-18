@@ -1,0 +1,18 @@
+server:
+  port: 8081
+spring:
+  main:
+    banner-mode: console
+  output:
+    ansi:
+      enabled: always
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: debug
+    com:
+      xqdd: debug
+#    root: debug
+  path: runtime/logs/
+
