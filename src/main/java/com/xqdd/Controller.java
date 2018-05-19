@@ -46,6 +46,9 @@ public class Controller {
         if (targetLang == null) {
             return new Msg(0, "target language is not support or invalid");
         }
+        if (targetLang == originLang) {
+            return new Msg(0, "target language is same as origin language");
+        }
         querier.setParams(originLang, targetLang, requestInfo.word);    // 设置参数
         List<String> result = querier.execute();
         if (result == null) {
