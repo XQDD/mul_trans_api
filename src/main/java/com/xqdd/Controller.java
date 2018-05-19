@@ -49,24 +49,29 @@ public class Controller {
         if (targetLang == originLang) {
             return new Msg(0, "target language is same as origin language");
         }
-        querier.setParams(originLang, targetLang, requestInfo.word);    // 设置参数
+        querier.setParams(originLang, targetLang, requestInfo.word.trim());    // 设置参数
         List<String> result = querier.execute();
         if (result == null) {
             return new Msg(0);
         }
-        List<String> list = result.stream().map(str -> {
-            str = str.trim();
-            if (str.startsWith("\"")) {
-                str = str.substring(1);
-            }
-            if (str.endsWith("\"")) {
-                str = str.substring(0, str.length() - 1);
-            }
-            if (str.equals("Translate failed !")) {
-                str = "";
-            }
-            return str;
-        }).filter(StringUtils::isNotBlank).collect(Collectors.toList());
+        List<String> list = result
+                .stream()
+                .map(str -> {
+                    str = str.trim();
+                    if (str.startsWith("\"")) {
+                        str = str.substring(1);
+                    }
+                    if (str.endsWith("\"")) {
+                        str = str.substring(0, str.length() - 1);
+                    }
+                    if (str.equals("Translate failed !")) {
+                        str = "";
+                    }
+                    return str;
+                })
+                .filter(StringUtils::isNotBlank)
+                .filter(str -> !str.toLowerCase().equals(requestInfo.word.trim().toLowerCase()))
+                .collect(Collectors.toList());
         if (!list.isEmpty()) {
             return new Msg(1, list);
         } else {
